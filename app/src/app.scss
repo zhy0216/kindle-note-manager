@@ -1,0 +1,72 @@
+$icon-font-path: "~@blueprintjs/core/resources/icons";
+@import '~@blueprintjs/core/lib/css/blueprint.css';
+
+html, body{
+  margin: 0;
+  height: 100%;
+}
+
+#root {
+    //display: flex;
+  height: 100%;
+  overflow: hidden;
+}
+
+.no-border {
+  box-shadow: none;
+  -webkit-box-shadow: none;
+  border: none;
+}
+
+.bp3-button {
+  outline: none;
+  outline-offset: 0;
+}
+
+.message-input{
+  width: 100%;
+  height: 60px;
+  padding: 15px 30px;
+  border-top: 1px solid #E1E8ED;
+  .bp3-editable-text{
+    &::before{
+      box-shadow: none;
+    }
+  }
+  .bp3-editable-text-content{
+    height: 32px !important;
+    overflow: hidden;
+  }
+
+  textarea{
+    vertical-align: baseline;
+    outline: none;
+    outline-offset: 0;
+    height: 32px;
+    max-height: 32px;
+  }
+}
+
+#folder-list-container, #setting-list-container{
+  .bp3-button-group{
+    width: 100%;
+    justify-content: space-between;
+  }
+  margin-top: 5px;
+  margin-left: 15px;
+  margin-right: 15px;
+  margin-bottom: -10px;
+}
+
+#left-bar{
+  .bp3-panel-stack-header{
+    display: none;
+  }
+  .bp3-panel-stack{
+    height: 100%;
+  }
+}
+
+
+
+
