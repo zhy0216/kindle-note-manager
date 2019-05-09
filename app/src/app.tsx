@@ -5,6 +5,7 @@ import { AppContainer } from 'react-hot-loader';
 
 import Application from './components/Application';
 import store from './store';
+import {parseFile} from './actions/clipActions';
 
 require('./app.scss');
 
@@ -16,9 +17,11 @@ document.body.appendChild(mainElement);
 mainElement.ondrop = (event) => {
   event.preventDefault();
 
-    // @ts-ignore
+  // @ts-ignore
   for (let f of event.dataTransfer.files) {
-    console.log('File(s) you dragged here: ', f.path)
+    console.log('File(s) you dragged here: ', f.path);
+    // @ts-ignore
+    store.dispatch(parseFile(f.path));
   }
 
   return false;

@@ -89,10 +89,10 @@ class _BookPanel extends React.Component<IPanelProps & {providerFolders: Provide
     console.log("providerFolders:", providerFolders)
     return (
       <div style={{height: "500px"}}>
-        {providerFolders.map(providerFolder => {
-          if (providerFolder.valid === false) return this.renderInvalidFolder(providerFolder);
-          else return this.renderFolder(providerFolder);
-        })}
+        {/*{providerFolders.map(providerFolder => {*/}
+        {/*  if (providerFolder.valid === false) return this.renderInvalidFolder(providerFolder);*/}
+        {/*  else return this.renderFolder(providerFolder);*/}
+        {/*})}*/}
       </div>
     )
   }

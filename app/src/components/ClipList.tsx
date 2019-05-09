@@ -2,10 +2,10 @@ import * as React from 'react';
 import * as Radium from 'radium';
 import { connect } from 'react-redux';
 import { RootState } from '../reducers';
-import { FileMeta } from '../types/folder';
+import {Clip} from "../types/clip";
 
 interface Props{
-  filesMeta: FileMeta[],
+  clips: Clip[],
 
 }
 
@@ -18,14 +18,14 @@ class _ClipList extends React.Component<Props> {
   }
 
   render () {
-    const {filesMeta} = this.props;
+    const {clips} = this.props;
 
     return (
       <div
         style={style.messageList}
         ref={el => (this.scrollList as any) = el}
       >
-        {/*{filesMeta.map((message, i) => {}}*/}
+        {clips.map((clip, i) => <div>{clip.content}</div>)}
       </div>)
   }
 }
@@ -41,9 +41,9 @@ const style = {
 };
 
 
-export const ClipList = Radium.default(connect(({filesMeta}: RootState) => {
+export const ClipList = Radium.default(connect(({clip}: RootState) => {
 
   return {
-    ...filesMeta,
+    clips: clip.clips,
   }
 })(_ClipList));

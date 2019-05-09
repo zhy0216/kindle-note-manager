@@ -1,11 +1,10 @@
 import { Reducer, combineReducers } from 'redux';
-import { filesMetaReducer, FilesmetaState } from './filesmeta';
-import { ADD_FILES_META } from '../actions/fileActions';
+import {ClipState, clipReducer} from './clips';
 
 export interface RootState {
-  filesMeta: FilesmetaState;
+  clip: ClipState;
 }
 
-export const rootReducer = combineReducers<RootState | undefined>({
-  filesMeta: filesMetaReducer,
+export const rootReducer = combineReducers<RootState>({
+  clip: clipReducer,
 });

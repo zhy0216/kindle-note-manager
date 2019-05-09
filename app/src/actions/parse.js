@@ -6,8 +6,10 @@ const moment = require("moment/moment");
 
 const nonEmpty = s => s.length > 0;
 
-function parse(text) {
-  return text.split("==========")
+export async function parse(filename) {
+  const buffer = await readFileAsync(filename);
+
+  return buffer.toString().split("==========")
     .filter(l => l.length > 5)
     .map(t => {
       try {
@@ -19,7 +21,7 @@ function parse(text) {
     .filter(x => x)
 }
 
-function parseClipText(clip_text) {
+export function parseClipText(clip_text) {
   const lines = clip_text.split(/\r?\n/).filter(nonEmpty);
   const title = lines[0];
   const datetimeStr = lines[1].split("|")[1];
@@ -29,33 +31,8 @@ function parseClipText(clip_text) {
 
   return {
     title,
-    time: moment(`${y}-${m}-${d} ${h2}:${min}:${s}`),
+    time: moment(`${y}-${m}-${d} ${h2}:${min}:${s}`).format('x'),
     content,
   }
 }
 
-function transformToBooks(clips) {
-  let r = {};
-
-  clips.map(clip => {
-    if (r[clip.title] == null){
-      r[clip.title] = []
-    }
-    r[clip.title].push(clip);
-  });
-
-  return Object.keys(r).map(title => ({
-    title,
-    clip: r[title].sort()
-  }));
-}
-
-function main() {
-  return readFileAsync("clip.txt")
-    .then(buffer => buffer.toString())
-    .then(parse)
-    .then(transformToBooks)
-    .then(console.log)
-}
-
-main();
