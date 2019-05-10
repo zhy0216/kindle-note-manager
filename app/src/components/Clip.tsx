@@ -46,7 +46,7 @@ class _ClipComponent extends React.Component<{clip: Clip}> {
 const style = {
   container: {
     display: "flex",
-    padding: "10px 0",
+    padding: "10px 0 0",
   },
   datetime: {
     borderBottom: `3px solid ${Colors.BLUE3}`,
@@ -54,8 +54,9 @@ const style = {
   },
   content: {
     flex: 1,
-    cursor: "pointer",
+    // cursor: "pointer",
     // "userSelect": "none",
+    lineHeight: "1.66em",
   },
 };
 

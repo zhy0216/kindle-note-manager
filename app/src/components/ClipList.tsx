@@ -29,10 +29,8 @@ function clumpClips(clips: Clip[]): {title: string, clips: Clip[]}[] {
 }
 
 class _ClipList extends React.Component<Props> {
-  scrollList?: {scrollTop, scrollHeight};
 
   componentDidUpdate(prevProps, prevState) {
-    this.scrollList!.scrollTop = this.scrollList!.scrollHeight;
   }
 
   render () {
@@ -41,16 +39,15 @@ class _ClipList extends React.Component<Props> {
     return (
       <div
         style={style.messageList}
-        ref={el => (this.scrollList as any) = el}
       >
         {clumpClips(clips).map(clumpedClips => (
           <div>
-            <H4 className="clumped-clip-header">{clumpedClips.title}</H4>
+            <H5 className="clumped-clip-header">{clumpedClips.title}</H5>
             {clumpedClips.clips.map(clip => <ClipComponent
               clip={clip}
               key={clip.id}
             />)}
-            <Divider style={{marginTop: "10px", marginBottom: "25px"}} />
+            <Divider style={{marginTop: "25px", marginBottom: "25px"}} />
           </div>
         ))}
       </div>)
