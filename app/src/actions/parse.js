@@ -18,7 +18,25 @@ export async function parse(filename) {
         console.log(e);
       }
     })
-    .filter(x => x)
+    .filter(x => x.content.length > 0)
+}
+
+function uuid() {
+   const chars = "0123456789abcdef".split("");
+   const uuid = [], rnd = Math.random;
+   let r;
+
+   uuid[8] = uuid[13] = uuid[18] = uuid[23] = "-";
+   uuid[14] = "4"; // version 4
+
+   for (let i = 0; i < 36; i++) {
+      if (!uuid[i]) {
+         r = 0 | rnd()*16;
+         uuid[i] = chars[(i === 19) ? (r & 0x3) | 0x8 : r & 0xf];
+      }
+   }
+
+   return uuid.join("");
 }
 
 export function parseClipText(clip_text) {
@@ -33,6 +51,7 @@ export function parseClipText(clip_text) {
     title,
     time: moment(`${y}-${m}-${d} ${h2}:${min}:${s}`).format('x'),
     content,
+    id: uuid(),
   }
 }
 

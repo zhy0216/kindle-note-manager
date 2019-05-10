@@ -3,6 +3,7 @@ import * as Radium from 'radium';
 import { connect } from 'react-redux';
 import { RootState } from '../reducers';
 import {Clip} from "../types/clip";
+import {ClipComponent} from './Clip';
 
 interface Props{
   clips: Clip[],
@@ -25,7 +26,11 @@ class _ClipList extends React.Component<Props> {
         style={style.messageList}
         ref={el => (this.scrollList as any) = el}
       >
-        {clips.map((clip, i) => <div>{clip.content}</div>)}
+        {clips.map((clip, i) => <ClipComponent
+            clip={clip}
+            key={clip.id}
+          />)
+        }
       </div>)
   }
 }

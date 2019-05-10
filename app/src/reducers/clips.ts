@@ -19,10 +19,12 @@ export const clipReducer: Reducer<ClipState> = (
   switch (action.type) {
   case ADD_CLIP:
     const addClipAction = (action as any);
+    const existClips = new Set(state.clips.map(clip => clip.content));
+
 
     return {
       ...state,
-      clips: [...state.clips, ...addClipAction.clips]
+      clips: [...state.clips, ...(addClipAction.clips.filter(clip => !existClips.has(clip.content)))]
     };
   default:
     return state;

@@ -13,14 +13,13 @@ import {
   IPanelProps,
   PanelStack, Classes
 } from '@blueprintjs/core';
-import { Provider, ProviderFolder } from '../../types/folder';
 import { RootState } from '../../reducers';
 import { AnyAction, Dispatch } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
 
 
 
-class _BookPanel extends React.Component<IPanelProps & {providerFolders: ProviderFolder[], dispatch: ThunkDispatch<{}, {}, AnyAction>}, {}> {
+class _BookPanel extends React.Component<IPanelProps & {dispatch: ThunkDispatch<{}, {}, AnyAction>}, {}> {
 
   renderToolbar() {
     return (
@@ -28,45 +27,21 @@ class _BookPanel extends React.Component<IPanelProps & {providerFolders: Provide
         <div id="setting-list-container">
           <ButtonGroup minimal={true}>
             <Button icon="help" />
-            <Button icon="plus" onClick={() => {}} />
           </ButtonGroup>
         </div>
       </div>
     )
   }
 
-  renderInvalidFolder(providerFolder: ProviderFolder) {
+
+  renderFolder() {
     const {dispatch} = this.props;
-    console.log("renderInvalidFolder:", providerFolder)
+    const skeletonClass = true? Classes.SKELETON: ""
 
     return (
       <Card
         elevation={Elevation.TWO}
-        key={providerFolder.id}
-        className={`no-border`}
-        style={style.card}
-        onClick={() => {
-          dispatch({id: providerFolder.id, type: 'REMOVE_FOLDER'});
-        }}
-      >
-        <div style={{display: "flex", alignItems: "center"}}>
-          <div style={{flex: "1", color: Colors.BLUE3, fontsize: "1.1em"}}>{providerFolder.folder.name}</div>
-        </div>
-        <div className={"bp3-text-small"} style={style.preview}>
-          Invalid provider info, please click to edit
-        </div>
-      </Card>
-    );
-  }
-
-  renderFolder(providerFolder: ProviderFolder) {
-    const {dispatch} = this.props;
-    const skeletonClass = providerFolder.valid == null? Classes.SKELETON: ""
-
-    return (
-      <Card
-        elevation={Elevation.TWO}
-        key={providerFolder.id}
+        // key={providerFolder.id}
         className={"no-border"}
         style={style.card}
         onClick={() => {
@@ -74,7 +49,7 @@ class _BookPanel extends React.Component<IPanelProps & {providerFolders: Provide
         }}
       >
         <div style={{display: "flex", alignItems: "center"}}>
-          <div className={skeletonClass} style={{flex: "1", color: Colors.BLUE3, fontsize: "1.1em"}}>{providerFolder.folder.name}</div>
+          <div className={skeletonClass} style={{flex: "1", color: Colors.BLUE3, fontsize: "1.1em"}}>{}</div>
           <div className={`bp3-text-small bp3-text-muted ${skeletonClass}`}>3/18/2019</div>
         </div>
         <div className={`bp3-text-small ${skeletonClass}`} style={style.preview}>
@@ -85,8 +60,6 @@ class _BookPanel extends React.Component<IPanelProps & {providerFolders: Provide
   }
 
   renderFolderList() {
-    const {providerFolders} = this.props;
-    console.log("providerFolders:", providerFolders)
     return (
       <div style={{height: "500px"}}>
         {/*{providerFolders.map(providerFolder => {*/}

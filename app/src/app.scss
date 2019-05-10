@@ -23,40 +23,18 @@ html, body{
   outline-offset: 0;
 }
 
-.message-input{
-  width: 100%;
-  height: 60px;
-  padding: 15px 30px;
-  border-top: 1px solid #E1E8ED;
-  .bp3-editable-text{
-    &::before{
-      box-shadow: none;
-    }
-  }
-  .bp3-editable-text-content{
-    height: 32px !important;
-    overflow: hidden;
-  }
-
-  textarea{
-    vertical-align: baseline;
-    outline: none;
-    outline-offset: 0;
-    height: 32px;
-    max-height: 32px;
+.clip {
+  position: relative;
+  .divide-line {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: #106ba3;
+    left: -13px;
+    top: 15px;
   }
 }
 
-#folder-list-container, #setting-list-container{
-  .bp3-button-group{
-    width: 100%;
-    justify-content: space-between;
-  }
-  margin-top: 5px;
-  margin-left: 15px;
-  margin-right: 15px;
-  margin-bottom: -10px;
-}
 
 #left-bar{
   .bp3-panel-stack-header{
@@ -66,6 +44,7 @@ html, body{
     height: 100%;
   }
 }
+
 
 
 
