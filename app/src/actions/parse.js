@@ -41,7 +41,7 @@ function uuid() {
 
 export function parseClipText(clip_text) {
   const lines = clip_text.split(/\r?\n/).filter(nonEmpty);
-  const title = lines[0];
+  const title = lines[0].trim();
   const datetimeStr = lines[1].split("|")[1];
   const [y, m, d, h, min, s] = datetimeStr.match(/\d+/ug);
   const h2 = datetimeStr.indexOf("上午") > -1? h: (parseInt(h) + 12).toString();
