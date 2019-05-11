@@ -1,6 +1,6 @@
 import { Action, Reducer } from 'redux';
 
-import { ADD_CLIP, SELECT_TITLE } from '../actions/clipActions';
+import {ADD_CLIP, ADD_SELECT_TITLE, SELECT_TITLE, UNSELECT_TITLE} from '../actions/clipActions';
 import {BookCollection, Clip, bookColletionToClips, clipsToBookCollections} from "../types/clip";
 
 
@@ -37,13 +37,30 @@ export const clipReducer: Reducer<ClipState> = (
         ...r
       }
     };
+  case ADD_SELECT_TITLE:
+    const addSelectTitleAction = (action as any);
+
+    return {
+      ...state,
+      selectedTitles: [...state.selectedTitles.filter(title => title !== addSelectTitleAction.title), addSelectTitleAction.title]
+    };
+
   case SELECT_TITLE:
     const selectTitleAction = (action as any);
 
     return {
       ...state,
-      selectedTitles: Array.from(new Set([...state.selectedTitles, selectTitleAction.title]))
+      selectedTitles: [selectTitleAction.title]
     };
+
+  case UNSELECT_TITLE:
+    const unselectTitleAction = (action as any);
+
+    return {
+      ...state,
+      selectedTitles: [...state.selectedTitles.filter(title => title !== unselectTitleAction.title)]
+    };
+
 
   default:
     return state;

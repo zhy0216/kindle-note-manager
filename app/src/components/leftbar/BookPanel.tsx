@@ -18,16 +18,13 @@ import { RootState } from '../../reducers';
 import { AnyAction, Dispatch } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
 import {BookCollection, Clip} from '../../types/clip';
-import {selectTitle} from '../../actions/clipActions';
+import {selectTitle, unselectTitle, addSelectTitle} from '../../actions/clipActions';
 import {number} from "prop-types";
 
 
-class _BookPanel extends React.Component<IPanelProps & {dispatch: ThunkDispatch<{}, {}, AnyAction>} & {clipsByTitle: BookCollection}, {}> {
-
+class _BookPanel extends React.Component<IPanelProps & {dispatch: ThunkDispatch<{}, {}, AnyAction>} & {clipsByTitle: BookCollection, selectedTitles: string[]}, {}> {
   constructor(props) {
     super(props);
-
-
   }
 
   renderToolbar() {
@@ -43,22 +40,27 @@ class _BookPanel extends React.Component<IPanelProps & {dispatch: ThunkDispatch<
   }
 
   renderBook(book: {title: string, count: number}, index: number) {
-    const {dispatch} = this.props;
+    const {dispatch, selectedTitles} = this.props;
     const skeletonClass = false? Classes.SKELETON: ""
+    const selectedTitleSet = new Set(selectedTitles);
+    const selected = selectedTitleSet.has(book.title);
 
     return (
       <Card
         elevation={Elevation.TWO}
-        // key={providerFolder.id}
-        className={"no-border"}
+        className={`no-border ${selected? "book-selected": ""}`}
         style={style.card}
         key={index}
         onClick={() => {
-          console.log("click me")
-          dispatch(selectTitle(book.title))
+          if (selected){
+            dispatch(unselectTitle(book.title))
+          } else {
+            dispatch(addSelectTitle(book.title))
+          }
         }}
+        onDoubleClick={() => dispatch(selectTitle(book.title))}
       >
-        <div style={{display: "flex", alignItems: "center"}}>
+        <div style={{display: "flex", alignItems: "center", justifyContent: "space-between",}}>
           <Text className={skeletonClass} ellipsize>{book.title}</Text>
           <div className={`bp3-text-small bp3-text-muted ${skeletonClass}`}>{book.count}</div>
         </div>
@@ -120,8 +122,10 @@ const style = {
 
 export const BookPanel = connect((state: RootState) => {
   const {clip} = state;
+  console.log("clip.selectedTitles!!", clip.selectedTitles)
 
   return {
-    clipsByTitle: clip.clipsByTitle
+    clipsByTitle: clip.clipsByTitle,
+    selectedTitles: clip.selectedTitles,
   }
 })(_BookPanel);
