@@ -1,24 +1,19 @@
+import { clipboard } from 'electron';
 import * as React from 'react';
 import * as Radium from 'radium';
 import {
-  Button,
-  Tooltip,
-  Position,
   Colors,
   ContextMenuTarget,
   Menu,
   MenuItem,
-  Intent,
-  EditableText, TextArea
+  TextArea
 } from '@blueprintjs/core';
 import { connect } from 'react-redux';
-import { RootState } from '../reducers';
 import {Clip} from "../types/clip";
 import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
-import {updateClipContent} from '../actions/clipActions';
+import {updateClipContent, deleteClip} from '../actions/clipActions';
 
-const { clipboard } = require('electron');
 
 
 
@@ -38,14 +33,14 @@ class _ClipComponent extends React.Component<{dispatch: ThunkDispatch<{}, {}, An
   }
 
   public renderContextMenu() {
-    const {clip} = this.props;
+    const {dispatch, clip} = this.props;
     const content = clip.editedContent || clip.content;
 
     return (
         <Menu>
             <MenuItem text="Copy" onClick={() => this.onCopy(content)}/>
             <MenuItem text="Edit" onClick={() => this.setState({edit: true})}/>
-            <MenuItem text="Delete" onClick={e => console.log(e.currentTarget)}/>
+            <MenuItem text="Delete" onClick={() => dispatch(deleteClip(clip.id, clip.title))}/>
         </Menu>
     );
   }

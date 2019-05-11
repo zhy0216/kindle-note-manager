@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as Radium from 'radium';
 import { connect } from 'react-redux';
 import {
   Button,
@@ -7,23 +6,25 @@ import {
   Card,
   Colors,
   Elevation,
-  FormGroup,
-  InputGroup,
-  HTMLSelect,
   IPanelProps,
   Text,
   OL,
-  PanelStack, Classes
+  Classes
 } from '@blueprintjs/core';
 import { RootState } from '../../reducers';
-import { AnyAction, Dispatch } from 'redux';
+import { AnyAction } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
-import {BookCollection, Clip} from '../../types/clip';
+import {BookCollection,} from '../../types/clip';
 import {selectTitle, unselectTitle, addSelectTitle} from '../../actions/clipActions';
-import {number} from "prop-types";
+
+type Props = {
+  dispatch: ThunkDispatch<{}, {}, AnyAction>,
+  clipsByTitle: BookCollection,
+  selectedTitles: string[]
+} & IPanelProps
 
 
-class _BookPanel extends React.Component<IPanelProps & {dispatch: ThunkDispatch<{}, {}, AnyAction>} & {clipsByTitle: BookCollection, selectedTitles: string[]}, {help: boolean}> {
+class _BookPanel extends React.Component<Props, {help: boolean}> {
   constructor(props) {
     super(props);
     this.state = {
@@ -31,7 +32,7 @@ class _BookPanel extends React.Component<IPanelProps & {dispatch: ThunkDispatch<
     }
   }
 
-  componentWillReceiveProps(nextProps: Readonly<IPanelProps & { dispatch: ThunkDispatch<{}, {}, AnyAction> } & { clipsByTitle: BookCollection; selectedTitles: string[] }>, nextContext: any): void {
+  componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
     if (this.state.help) {
       this.setState({help : Object.keys(nextProps.clipsByTitle).length === 0})
     }
@@ -112,9 +113,6 @@ class _BookPanel extends React.Component<IPanelProps & {dispatch: ThunkDispatch<
       </div>
     )
   }
-
-
-
 }
 
 const borderStyle = `1px solid ${Colors.LIGHT_GRAY3}`;

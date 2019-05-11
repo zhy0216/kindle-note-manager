@@ -35,6 +35,12 @@ html, body{
   }
 }
 
+#setting-list-container {
+  justify-content: flex-end;
+  display: flex;
+  padding-right: 10px;
+}
+
 .book-selected{
   color: #106ba3;
 }

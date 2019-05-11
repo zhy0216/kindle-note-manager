@@ -1,4 +1,4 @@
-import { Reducer, combineReducers } from 'redux';
+import { combineReducers } from 'redux';
 import {ClipState, clipReducer} from './clips';
 
 export interface RootState {
