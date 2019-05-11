@@ -18,7 +18,6 @@ export interface AddClipAction {
 export const parseFile = (filePath: string): ThunkAction<Promise<void>, {}, {}, AnyAction> =>
   async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
     const clips = await parse(filePath);
-    console.log(clips.slice(0, 4));
     dispatch({type: 'ADD_CLIP', clips});
 
   };

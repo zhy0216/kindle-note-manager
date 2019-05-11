@@ -31,6 +31,12 @@ class _BookPanel extends React.Component<IPanelProps & {dispatch: ThunkDispatch<
     }
   }
 
+  componentWillReceiveProps(nextProps: Readonly<IPanelProps & { dispatch: ThunkDispatch<{}, {}, AnyAction> } & { clipsByTitle: BookCollection; selectedTitles: string[] }>, nextContext: any): void {
+    if (this.state.help) {
+      this.setState({help : Object.keys(nextProps.clipsByTitle).length === 0})
+    }
+  }
+
   renderToolbar() {
     return (
       <div>
