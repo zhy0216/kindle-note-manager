@@ -1,25 +1,6 @@
 import { app, BrowserWindow } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
-const join = require('path').join;
-const fs = require('fs');
-
-const homedir = process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME'];
-
-export const expandHomeDir = (path: string) => {
-  if (!path) return path;
-  if (path === '~') return homedir;
-  if (path.slice(0, 2) !== '~/') return path;
-  return join(homedir || "", path.slice(2));
-};
-
-export const createFolder = (path: string) => {
-  const expendedPath = expandHomeDir(path);
-  // process.stdout.write("#########################################################################")
-  // process.stdout.write(expendedPath)
-  if (!fs.existsSync(expendedPath)) fs.mkdir(expendedPath, err => {});
-};
-
 
 let win: BrowserWindow | null;
 
@@ -44,6 +25,7 @@ const createWindow = async () => {
     webPreferences: {
       nativeWindowOpen: true
     },
+    icon: __dirname + '/static/note.png'
   });
   if (process.env.NODE_ENV !== 'production') {
     win.loadURL(`http://localhost:2003`);
@@ -70,7 +52,6 @@ const createWindow = async () => {
 
 app.on('ready', () => {
   createWindow();
-  createFolder('~/.strongbox');
 });
 
 app.on('window-all-closed', () => {
