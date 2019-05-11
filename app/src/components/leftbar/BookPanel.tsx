@@ -11,15 +11,22 @@ import {
   InputGroup,
   HTMLSelect,
   IPanelProps,
+  Text,
   PanelStack, Classes
 } from '@blueprintjs/core';
 import { RootState } from '../../reducers';
 import { AnyAction, Dispatch } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
+import {BookCollection, Clip} from '../../types/clip';
 
 
+class _BookPanel extends React.Component<IPanelProps & {dispatch: ThunkDispatch<{}, {}, AnyAction>} & {clipsByTitle: BookCollection}, {}> {
 
-class _BookPanel extends React.Component<IPanelProps & {dispatch: ThunkDispatch<{}, {}, AnyAction>}, {}> {
+  constructor(props) {
+    super(props);
+
+
+  }
 
   renderToolbar() {
     return (
@@ -33,10 +40,9 @@ class _BookPanel extends React.Component<IPanelProps & {dispatch: ThunkDispatch<
     )
   }
 
-
-  renderFolder() {
+  renderBook(book: {title: string, count: number}) {
     const {dispatch} = this.props;
-    const skeletonClass = true? Classes.SKELETON: ""
+    const skeletonClass = false? Classes.SKELETON: ""
 
     return (
       <Card
@@ -49,32 +55,28 @@ class _BookPanel extends React.Component<IPanelProps & {dispatch: ThunkDispatch<
         }}
       >
         <div style={{display: "flex", alignItems: "center"}}>
-          <div className={skeletonClass} style={{flex: "1", color: Colors.BLUE3, fontsize: "1.1em"}}>{}</div>
-          <div className={`bp3-text-small bp3-text-muted ${skeletonClass}`}>3/18/2019</div>
-        </div>
-        <div className={`bp3-text-small ${skeletonClass}`} style={style.preview}>
-          react. Contribute to kingofthestack/react-chat-window development by creating an account on GitHub.
+          <Text className={skeletonClass} ellipsize>{book.title}</Text>
+          <div className={`bp3-text-small bp3-text-muted ${skeletonClass}`}>{book.count}</div>
         </div>
       </Card>
     )
   }
 
-  renderFolderList() {
+  renderBookList(bookCollection: BookCollection) {
     return (
       <div style={{height: "500px"}}>
-        {/*{providerFolders.map(providerFolder => {*/}
-        {/*  if (providerFolder.valid === false) return this.renderInvalidFolder(providerFolder);*/}
-        {/*  else return this.renderFolder(providerFolder);*/}
-        {/*})}*/}
+        {Object.keys(bookCollection).sort().map(title => this.renderBook({title, count: bookCollection[title].length }))}
       </div>
     )
   }
 
   render() {
+    const {clipsByTitle} = this.props;
+
     return (
       <div>
         {this.renderToolbar()}
-        {this.renderFolderList()}
+        {this.renderBookList(clipsByTitle)}
       </div>
     )
   }
@@ -113,7 +115,9 @@ const style = {
 };
 
 export const BookPanel = connect((state: RootState) => {
-  const {} = state;
+  const {clip} = state;
+
   return {
+    clipsByTitle: clip.clipsByTitle
   }
 })(_BookPanel);

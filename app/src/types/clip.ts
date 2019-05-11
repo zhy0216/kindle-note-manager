@@ -9,3 +9,25 @@ export type Clip = {
   content: string,
   editedContent?: string,
 }
+
+export type BookCollection = {
+    [id: string]: Clip[],
+}
+
+
+export function bookColletionToClips(bookCollection: BookCollection): Clip[]  {
+  return Object.values(bookCollection).reduce((acc, arr) => acc.concat(arr), [])
+}
+
+export function clipsToBookCollections(clips: Clip[]): BookCollection  {
+  const r = {};
+  clips.map((clip: Clip) => {
+    if (!(clip.title in r)) {
+      r[clip.title] = []
+    }
+
+    r[clip.title].push(clip)
+  });
+  return r
+}
+

@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as Radium from 'radium';
 import { connect } from 'react-redux';
 import { RootState } from '../reducers';
-import {Clip} from "../types/clip";
+import {bookColletionToClips, Clip} from "../types/clip";
 import {ClipComponent} from './Clip';
 import {Divider, H3, H4, H5} from '@blueprintjs/core';
 
@@ -30,11 +30,26 @@ function clumpClips(clips: Clip[]): {title: string, clips: Clip[]}[] {
 
 class _ClipList extends React.Component<Props> {
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+
+    }
+  }
+
   componentDidUpdate(prevProps, prevState) {
+
+  }
+
+  renderHelp() {
+    return <div></div>
   }
 
   render () {
     const {clips} = this.props;
+
+    if (clips.length === 0) return this.renderHelp();
 
     return (
       <div
@@ -66,8 +81,11 @@ const style = {
 
 
 export const ClipList = Radium.default(connect(({clip}: RootState) => {
+  const clips = clip.selectedTitle? clip.clipsByTitle[clip.selectedTitle]:
+    bookColletionToClips(clip.clipsByTitle).sort((c1, c2) => c1.time - c2.time);
+
 
   return {
-    clips: clip.clips,
+    clips,
   }
 })(_ClipList));
