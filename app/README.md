@@ -1,1 +1,1 @@
-# kindle clip viewer
+# kindle notes manager

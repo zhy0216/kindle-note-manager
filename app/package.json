@@ -58,7 +58,6 @@
       "output": "release"
     },
     "files": [
-      "static/",
       "dist/",
       "node_modules/",
       "package.json"

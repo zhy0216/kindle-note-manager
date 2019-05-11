@@ -25,7 +25,7 @@ const createWindow = async () => {
     webPreferences: {
       nativeWindowOpen: true
     },
-    icon: __dirname + '/static/note.png'
+    icon: path.join(__dirname, 'icon.icns')
   });
   if (process.env.NODE_ENV !== 'production') {
     win.loadURL(`http://localhost:2003`);
