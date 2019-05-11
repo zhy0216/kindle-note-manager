@@ -2,8 +2,8 @@ import { Action, Reducer } from 'redux';
 
 import {
   ADD_CLIP,
-  ADD_SELECT_TITLE,
-  DELETE_CLIP,
+  ADD_SELECT_TITLE, DELETE_BOOK_CLIP,
+  DELETE_CLIP, RESTORE_CLIP,
   SELECT_TITLE,
   UNSELECT_TITLE,
   UPDATE_CLIP_CONTENT
@@ -96,6 +96,25 @@ export const clipReducer: Reducer<ClipState> = (
         [deleteData.title]: state.clipsByTitle[deleteData.title].filter(clip => clip.id !== deleteData.id),
       },
       _deleted: [...state["_deleted"].filter(clip => clip.content != deletedClip.content), deletedClip]
+    };
+
+  case DELETE_BOOK_CLIP:
+    const deleteBookAction = (action as any);
+    const deletedClips = state.clipsByTitle[deleteBookAction.title];
+    const contentSet = new Set(deletedClips.map(clip => clip.content));
+    const newByTitle = {...state.clipsByTitle};
+    delete newByTitle[deleteBookAction.title]
+
+    return {
+      ...state,
+      selectedTitles: state.selectedTitles.filter(title => title !== deleteBookAction.title),
+      clipsByTitle: newByTitle,
+      _deleted: [...state["_deleted"].filter(clip => contentSet.has(clip.content))].concat(deletedClips)
+    };
+
+  case RESTORE_CLIP:
+    return {
+      ...(action as any).data
     };
 
   default:

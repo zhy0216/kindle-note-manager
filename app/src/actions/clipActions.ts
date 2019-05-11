@@ -1,7 +1,5 @@
 import { ThunkAction, ThunkDispatch } from 'redux-thunk'
-import { AnyAction, Dispatch } from 'redux';
-
-import { Clip } from '../types/clip';
+import { AnyAction } from 'redux';
 import {parse} from './parse';
 import {v4String} from "uuid/interfaces";
 
@@ -11,12 +9,8 @@ export const SELECT_TITLE = 'SELECT_TITLE';
 export const UNSELECT_TITLE = 'UNSELECT_TITLE';
 export const UPDATE_CLIP_CONTENT = "UPDATE_CLIP_CONTENT";
 export const DELETE_CLIP = "DELETE_CLIP";
-
-
-export interface AddClipAction {
-  clips: Clip[];
-  type: 'ADD_CLIP';
-}
+export const RESTORE_CLIP = "RESTORE_CLIP";
+export const DELETE_BOOK_CLIP = "DELETE_BOOK_CLIP";
 
 export const parseFile = (filePath: string): ThunkAction<Promise<void>, {}, {}, AnyAction> =>
   async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
@@ -34,3 +28,5 @@ export const unselectTitle = (title: string) => ({type: UNSELECT_TITLE, title});
 export const updateClipContent = (id: v4String, title: string, content: string) => ({type: UPDATE_CLIP_CONTENT, data: {title, id, content}});
 
 export const deleteClip = (id: v4String, title: string) => ({type: DELETE_CLIP, data: {id, title}});
+
+export const deleteBookClip = (title: string) => ({type: DELETE_BOOK_CLIP, title});

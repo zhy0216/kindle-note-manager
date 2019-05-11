@@ -3,19 +3,14 @@ import { connect } from 'react-redux';
 import {
   Button,
   ButtonGroup,
-  Card,
-  Colors,
-  Elevation,
   IPanelProps,
-  Text,
   OL,
-  Classes
 } from '@blueprintjs/core';
 import { RootState } from '../../reducers';
 import { AnyAction } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
 import {BookCollection,} from '../../types/clip';
-import {selectTitle, unselectTitle, addSelectTitle} from '../../actions/clipActions';
+import {BookComponent} from "./Book";
 
 type Props = {
   dispatch: ThunkDispatch<{}, {}, AnyAction>,
@@ -57,7 +52,7 @@ class _BookPanel extends React.Component<Props, {help: boolean}> {
     return (
       <div style={{marginTop: "200px"}}>
         <OL>
-          <li className="">把你的 kindle 连接你的电脑</li>
+          <li>把你的 kindle 连接你的电脑</li>
           <li>在 Documents 找到 My Clippings.txt</li>
           <li>把文件拖至本程序</li>
         </OL>
@@ -65,39 +60,16 @@ class _BookPanel extends React.Component<Props, {help: boolean}> {
     )
   }
 
-  renderBook(book: {title: string, count: number}, index: number) {
-    const {dispatch, selectedTitles} = this.props;
-    const skeletonClass = false? Classes.SKELETON: ""
-    const selectedTitleSet = new Set(selectedTitles);
-    const selected = selectedTitleSet.has(book.title);
-
-    return (
-      <Card
-        elevation={Elevation.TWO}
-        className={`no-border ${selected? "book-selected": ""}`}
-        style={style.card}
-        key={index}
-        onClick={() => {
-          if (selected){
-            dispatch(unselectTitle(book.title))
-          } else {
-            dispatch(addSelectTitle(book.title))
-          }
-        }}
-        onDoubleClick={() => dispatch(selectTitle(book.title))}
-      >
-        <div style={{display: "flex", alignItems: "center", justifyContent: "space-between",}}>
-          <Text className={skeletonClass} ellipsize>{book.title}</Text>
-          <div className={`bp3-text-small bp3-text-muted ${skeletonClass}`}>{book.count}</div>
-        </div>
-      </Card>
-    )
-  }
-
   renderBookList(bookCollection: BookCollection) {
+    const {selectedTitles} = this.props;
+
     return (
       <div style={{height: "500px"}}>
-        {Object.keys(bookCollection).sort().map((title, i) => this.renderBook({title, count: bookCollection[title].length }, i))}
+        {Object.keys(bookCollection).sort().map((title, i) => <BookComponent
+          key={i}
+          book={{title: title, count: bookCollection[title].length}}
+          selected={selectedTitles.indexOf(title) > -1}
+        />)}
       </div>
     )
   }
@@ -115,38 +87,9 @@ class _BookPanel extends React.Component<Props, {help: boolean}> {
   }
 }
 
-const borderStyle = `1px solid ${Colors.LIGHT_GRAY3}`;
-
-const style = {
-  container: {
-    width: 300,
-    borderRight: borderStyle,
-    height: "100%",
-  },
-  card: {
-    borderBottom: borderStyle,
-    borderRadius: 0,
-    cursor: "pointer",
-  },
-  cardActive: {
-    backgroundColor: Colors.BLUE1,
-  },
-  preview: {
-    height: "2.5em",
-    overflow: "hidden",
-  },
-  addButton: {
-  },
-  addButtonContainer: {
-    position: "fixed",
-
-  }
-
-};
-
 export const BookPanel = connect((state: RootState) => {
   const {clip} = state;
-
+  console.log(clip)
   return {
     clipsByTitle: clip.clipsByTitle,
     selectedTitles: clip.selectedTitles,

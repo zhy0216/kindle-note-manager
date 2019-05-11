@@ -76,7 +76,7 @@ class _ClipComponent extends React.Component<{dispatch: ThunkDispatch<{}, {}, An
           onChange={(e) => this.setState({value: e.target.value})}
           onBlur={() => this.onTextBlur()}
         />
-        : <div style={style.content}>{content}</div>
+        : <div className="no-select" style={style.content}>{content}</div>
         }
         <div
           style={{display: "flex", flexDirection: "column"}}
@@ -98,11 +98,9 @@ const style = {
   content: {
     flex: 1,
     cursor: "default",
-    // "userSelect": "none",
     lineHeight: "1.66em",
   },
 };
 
-style.content["userSelect"] = "none"; // void type error
 
 export const ClipComponent = Radium.default(connect()(_ClipComponent));

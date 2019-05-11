@@ -35,6 +35,10 @@ html, body{
   }
 }
 
+.no-select {
+  user-select: none;
+}
+
 #setting-list-container {
   justify-content: flex-end;
   display: flex;

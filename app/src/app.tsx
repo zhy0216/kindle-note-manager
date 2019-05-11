@@ -5,7 +5,7 @@ import { AppContainer } from 'react-hot-loader';
 
 import Application from './components/Application';
 import store from './store';
-import {parseFile} from './actions/clipActions';
+import {parseFile, RESTORE_CLIP} from './actions/clipActions';
 
 require('./app.scss');
 
@@ -49,7 +49,7 @@ const render = (Component: () => JSX.Element) => {
         mainElement
     );
 };
-// localStorage.strongboxProviderFolder && store.dispatch({type: FOLDER_RESTORING, data: JSON.parse(localStorage.strongboxProviderFolder)});
+localStorage.clip && store.dispatch({type: RESTORE_CLIP, data: JSON.parse(localStorage.clip)});
 render(Application);
 
 // Hot Module Replacement API
@@ -62,7 +62,7 @@ if (typeof module.hot !== 'undefined') {
 }
 
 require('electron').remote.getCurrentWindow().on('close', () => {
-  // const state = store.getState();
-  // localStorage.strongboxProviderFolder = JSON.stringify(state && state.providerFolder);
+  const state = store.getState();
+  localStorage.clip = JSON.stringify(state && state.clip);
 });
 
