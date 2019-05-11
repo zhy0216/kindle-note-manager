@@ -16,6 +16,8 @@ import { RootState } from '../reducers';
 import {Clip} from "../types/clip";
 import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
+import {updateClipContent} from '../actions/clipActions';
+
 const { clipboard } = require('electron');
 
 
@@ -57,11 +59,11 @@ class _ClipComponent extends React.Component<{dispatch: ThunkDispatch<{}, {}, An
   }
 
   onTextBlur() {
-    const {dispatch} = this.props;
+    const {dispatch, clip} = this.props;
     const {value} = this.state;
 
-    this.setState({edit: false})
-
+    this.setState({edit: false});
+    dispatch(updateClipContent(clip.id, clip.title, value));
   }
 
 
@@ -71,7 +73,11 @@ class _ClipComponent extends React.Component<{dispatch: ThunkDispatch<{}, {}, An
     const content = clip.editedContent || clip.content;
 
     return (
-      <div className="clip" style={style.container} onClick={() => (this.onCopy(content))}>
+      <div className="clip"
+           style={style.container}
+           onClick={() => (this.onCopy(content))}
+           onDoubleClick={() => this.setState({edit: true})}
+      >
         <div className="divide-line" />
         {edit? <TextArea
           fill
