@@ -11,6 +11,8 @@ import { AnyAction } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
 import {BookCollection,} from '../../types/clip';
 import {BookComponent} from "./Book";
+const { dialog } = require('electron').remote;
+const fs = require('fs');
 
 type Props = {
   dispatch: ThunkDispatch<{}, {}, AnyAction>,
@@ -33,11 +35,40 @@ class _BookPanel extends React.Component<Props, {help: boolean}> {
     }
   }
 
+  async prepareMd() {
+    const {clipsByTitle} = this.props;
+
+    return new Promise(resolve => {
+      const content = Object.keys(clipsByTitle)
+        .sort()
+        .map(title => {
+          return `### ${title}\n${clipsByTitle[title].map(clip => "* " + clip.content).join("\n")}`
+        })
+        .join("\n");
+      resolve(content)
+    })
+  }
+
   renderToolbar() {
     return (
       <div>
         <div id="setting-list-container">
           <ButtonGroup minimal={true}>
+            <Button
+              icon="document-share"
+              onClick={() => {
+                const promiseMd = this.prepareMd();
+                // @ts-ignore
+                dialog.showSaveDialog(null, {
+                  title: "output as markdown",
+                  filters: [{ name: 'Custom File Type', extensions: ['md']},]
+                },
+                async (filename) => {
+                  const md = await promiseMd;
+                  fs.writeFile(filename, md, () => {});
+                })
+              }}
+            />
             <Button
               icon="help"
               onClick={() => this.setState(prevState => ({help: !prevState.help}))}
