@@ -120,7 +120,7 @@ class _BookPanel extends React.Component<Props, {help: boolean}> {
 
 export const BookPanel = connect((state: RootState) => {
   const {clip} = state;
-  console.log(clip)
+
   return {
     clipsByTitle: clip.clipsByTitle,
     selectedTitles: clip.selectedTitles,

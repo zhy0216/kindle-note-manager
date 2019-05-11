@@ -19,7 +19,6 @@ mainElement.ondrop = (event) => {
 
   // @ts-ignore
   for (let f of event.dataTransfer.files) {
-    console.log('File(s) you dragged here: ', f.path);
     // @ts-ignore
     store.dispatch(parseFile(f.path));
   }

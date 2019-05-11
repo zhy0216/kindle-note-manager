@@ -37,8 +37,8 @@ class _ClipList extends React.Component<Props> {
       >
         {Object.keys(clipsByTitle)
           .filter(title => selectedTitles.length === 0 || selectedTitleSet.has(title))
-          .map(title => (
-          <div>
+          .map((title, i) => (
+          <div key={i}>
             <H5 className="clumped-clip-header">{title}</H5>
             {clipsByTitle[title].map(clip => <ClipComponent
               clip={clip}
