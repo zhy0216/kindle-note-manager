@@ -50,9 +50,9 @@
   },
   "build": {
     "productName": "Kindle 笔记",
-    "appId": "im.yangz",
+    "appId": "im.yangz.kindle",
     "mac": {
-      "category": "im.yangz.kindle"
+      "category": "public.app-category.education"
     },
     "directories": {
       "output": "release"
