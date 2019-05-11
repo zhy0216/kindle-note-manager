@@ -1,25 +1,49 @@
 import * as React from 'react';
 import * as Radium from 'radium';
-import { Button, Tooltip, Position, Colors, ContextMenuTarget, Menu, MenuItem, Intent } from '@blueprintjs/core';
+import {
+  Button,
+  Tooltip,
+  Position,
+  Colors,
+  ContextMenuTarget,
+  Menu,
+  MenuItem,
+  Intent,
+  EditableText, TextArea
+} from '@blueprintjs/core';
 import { connect } from 'react-redux';
 import { RootState } from '../reducers';
 import {Clip} from "../types/clip";
+import {ThunkDispatch} from "redux-thunk";
+import {AnyAction} from "redux";
+const { clipboard } = require('electron');
 
 
 
 
 @ContextMenuTarget
-class _ClipComponent extends React.Component<{clip: Clip}> {
+class _ClipComponent extends React.Component<{dispatch: ThunkDispatch<{}, {}, AnyAction>} & {clip: Clip}, {edit: boolean, value: string}> {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      edit: false,
+      value: props.clip.editedContent || props.clip.content,
+    }
+  }
 
   componentDidUpdate(prevProps, prevState) {
   }
 
   public renderContextMenu() {
-        // return a single element, or nothing to use default browser behavior
+    const {clip} = this.props;
+    const content = clip.editedContent || clip.content;
+
     return (
         <Menu>
-            <MenuItem text="Edit" />
-            <MenuItem text="Delete" />
+            <MenuItem text="Copy" onClick={() => this.onCopy(content)}/>
+            <MenuItem text="Edit" onClick={() => this.setState({edit: true})}/>
+            <MenuItem text="Delete" onClick={e => console.log(e.currentTarget)}/>
         </Menu>
     );
   }
@@ -28,13 +52,35 @@ class _ClipComponent extends React.Component<{clip: Clip}> {
         // Optional method called once the context menu is closed.
   }
 
+  onCopy(text) {
+    clipboard.writeText(text)
+  }
+
+  onTextBlur() {
+    const {dispatch} = this.props;
+    const {value} = this.state;
+
+    this.setState({edit: false})
+
+  }
+
+
   render () {
     const {clip} = this.props;
+    const {edit, value} = this.state;
+    const content = clip.editedContent || clip.content;
 
     return (
-      <div className="clip" style={style.container}>
+      <div className="clip" style={style.container} onClick={() => (this.onCopy(content))}>
         <div className="divide-line" />
-        <div style={style.content}>{clip.editedContent || clip.content}</div>
+        {edit? <TextArea
+          fill
+          value={value}
+          onChange={(e) => this.setState({value: e.target.value})}
+          onBlur={() => this.onTextBlur()}
+        />
+        : <div style={style.content}>{content}</div>
+        }
         <div
           style={{display: "flex", flexDirection: "column"}}
         >
@@ -54,7 +100,7 @@ const style = {
   },
   content: {
     flex: 1,
-    // cursor: "pointer",
+    cursor: "default",
     // "userSelect": "none",
     lineHeight: "1.66em",
   },
@@ -62,4 +108,4 @@ const style = {
 
 style.content["userSelect"] = "none"; // void type error
 
-export const ClipComponent = Radium.default(_ClipComponent);
+export const ClipComponent = Radium.default(connect()(_ClipComponent));
