@@ -14,10 +14,6 @@ import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
 import {updateClipContent, deleteClip} from '../actions/clipActions';
 
-
-
-
-
 @ContextMenuTarget
 class _ClipComponent extends React.Component<{dispatch: ThunkDispatch<{}, {}, AnyAction>} & {clip: Clip}, {edit: boolean, value: string}> {
 

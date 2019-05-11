@@ -2,30 +2,13 @@ import * as React from 'react';
 import * as Radium from 'radium';
 import { connect } from 'react-redux';
 import { RootState } from '../reducers';
-import {bookColletionToClips, Clip} from "../types/clip";
+import {BookCollection, bookColletionToClips, Clip} from "../types/clip";
 import {ClipComponent} from './Clip';
 import {Divider, H3, H4, H5} from '@blueprintjs/core';
 
 interface Props{
-  clips: Clip[],
-
-}
-
-function clumpClips(clips: Clip[]): {title: string, clips: Clip[]}[] {
-  const r: Clip[][] = [];
-
-  for (let clip of clips) {
-    if (r.length === 0 || r[r.length - 1][0].title !== clip.title) {
-      r.push([clip])
-    } else {
-        r[r.length - 1].push(clip)
-    }
-  }
-
-  return r.map(clips => ({
-    title: clips[0].title,
-    clips
-  }))
+  clipsByTitle: BookCollection,
+  selectedTitles: string[],
 }
 
 class _ClipList extends React.Component<Props> {
@@ -38,27 +21,26 @@ class _ClipList extends React.Component<Props> {
     }
   }
 
-  componentDidUpdate(prevProps, prevState) {
-
-  }
-
   renderImage() {
-    return (<div className="non-clip-imge" />)
+    return (<div className="non-clip-image" />)
   }
 
   render () {
-    const {clips} = this.props;
+    const {clipsByTitle, selectedTitles} = this.props;
+    const selectedTitleSet = new Set(selectedTitles);
 
-    if (clips.length === 0) return this.renderImage();
+    if (Object.keys(clipsByTitle).length === 0) return this.renderImage();
 
     return (
       <div
         style={style.messageList}
       >
-        {clumpClips(clips).map(clumpedClips => (
+        {Object.keys(clipsByTitle)
+          .filter(title => selectedTitles.length === 0 || selectedTitleSet.has(title))
+          .map(title => (
           <div>
-            <H5 className="clumped-clip-header">{clumpedClips.title}</H5>
-            {clumpedClips.clips.map(clip => <ClipComponent
+            <H5 className="clumped-clip-header">{title}</H5>
+            {clipsByTitle[title].map(clip => <ClipComponent
               clip={clip}
               key={clip.id}
             />)}
@@ -81,13 +63,9 @@ const style = {
 
 
 export const ClipList = Radium.default(connect(({clip}: RootState) => {
-  const clips = clip.selectedTitles.length > 0? clip.selectedTitles
-      .map(title =>  clip.clipsByTitle[title])
-      .reduce((acc, arr) => acc.concat(arr)):
-    bookColletionToClips(clip.clipsByTitle).sort((c1, c2) => c1.time - c2.time);
-
 
   return {
-    clips,
+    clipsByTitle: clip.clipsByTitle,
+    selectedTitles: clip.selectedTitles
   }
 })(_ClipList));

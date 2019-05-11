@@ -12,17 +12,17 @@ import {BookCollection, Clip, bookColletionToClips, clipsToBookCollections} from
 
 
 export interface ClipState {
-  // readonly clips: Clip[];
   readonly clipsByTitle: BookCollection,
   readonly selectedTitles: string[],
+  readonly _deleted: Clip[];
 }
 
 const defaultState: ClipState = {
-  // clips: [],
   clipsByTitle: {
 
   },
-  selectedTitles: []
+  selectedTitles: [],
+  _deleted: [],
 };
 
 export const clipReducer: Reducer<ClipState> = (
@@ -35,7 +35,7 @@ export const clipReducer: Reducer<ClipState> = (
     const addClipAction = (action as any);
     const clips = bookColletionToClips(state.clipsByTitle);
 
-    const existClips = new Set(clips.map(clip => clip.content));
+    const existClips = new Set((clips.concat(state["_deleted"])).map(clip => clip.content));
     const newClips: Clip[] = [...clips, ...(addClipAction.clips.filter(clip => !existClips.has(clip.content)))];
     const r = clipsToBookCollections(newClips.sort((c1, c2) => c1.time - c2.time));
 
@@ -87,14 +87,15 @@ export const clipReducer: Reducer<ClipState> = (
   case DELETE_CLIP:
     const deleteClipAction = (action as any);
     const deleteData = deleteClipAction.data;
+    const deletedClip = state.clipsByTitle[deleteData.title].filter(clip => clip.id === deleteData.id)[0];
 
     return {
       ...state,
       clipsByTitle: {
         ...state.clipsByTitle,
         [deleteData.title]: state.clipsByTitle[deleteData.title].filter(clip => clip.id !== deleteData.id),
-        // _delete: deleteData.
-      }
+      },
+      _deleted: [...state["_deleted"].filter(clip => clip.content != deletedClip.content), deletedClip]
     };
 
   default:
