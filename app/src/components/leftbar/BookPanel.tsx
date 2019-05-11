@@ -12,6 +12,7 @@ import {
   HTMLSelect,
   IPanelProps,
   Text,
+  OL,
   PanelStack, Classes
 } from '@blueprintjs/core';
 import { RootState } from '../../reducers';
@@ -22,9 +23,12 @@ import {selectTitle, unselectTitle, addSelectTitle} from '../../actions/clipActi
 import {number} from "prop-types";
 
 
-class _BookPanel extends React.Component<IPanelProps & {dispatch: ThunkDispatch<{}, {}, AnyAction>} & {clipsByTitle: BookCollection, selectedTitles: string[]}, {}> {
+class _BookPanel extends React.Component<IPanelProps & {dispatch: ThunkDispatch<{}, {}, AnyAction>} & {clipsByTitle: BookCollection, selectedTitles: string[]}, {help: boolean}> {
   constructor(props) {
     super(props);
+    this.state = {
+      help: Object.keys(props.clipsByTitle).length === 0
+    }
   }
 
   renderToolbar() {
@@ -32,9 +36,24 @@ class _BookPanel extends React.Component<IPanelProps & {dispatch: ThunkDispatch<
       <div>
         <div id="setting-list-container">
           <ButtonGroup minimal={true}>
-            <Button icon="help" />
+            <Button
+              icon="help"
+              onClick={() => this.setState(prevState => ({help: !prevState.help}))}
+            />
           </ButtonGroup>
         </div>
+      </div>
+    )
+  }
+
+  renderHelp() {
+    return (
+      <div style={{marginTop: "200px"}}>
+        <OL>
+          <li className="">把你的 kindle 连接你的电脑</li>
+          <li>在 Documents 找到 My Clippings.txt</li>
+          <li>把文件拖至本程序</li>
+        </OL>
       </div>
     )
   }
@@ -78,11 +97,12 @@ class _BookPanel extends React.Component<IPanelProps & {dispatch: ThunkDispatch<
 
   render() {
     const {clipsByTitle} = this.props;
+    const {help} = this.state;
 
     return (
       <div>
         {this.renderToolbar()}
-        {this.renderBookList(clipsByTitle)}
+        {help || Object.keys(clipsByTitle).length === 0? this.renderHelp(): this.renderBookList(clipsByTitle)}
       </div>
     )
   }
@@ -122,7 +142,6 @@ const style = {
 
 export const BookPanel = connect((state: RootState) => {
   const {clip} = state;
-  console.log("clip.selectedTitles!!", clip.selectedTitles)
 
   return {
     clipsByTitle: clip.clipsByTitle,

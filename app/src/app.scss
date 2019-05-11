@@ -39,6 +39,13 @@ html, body{
   color: #106ba3;
 }
 
+.non-clip-imge {
+  background-image: url(../static/book.jpg);
+  background-size: cover;
+  background-position: 777px 0px;
+  height: 100%;
+}
+
 #left-bar{
   .bp3-panel-stack-header{
     display: none;

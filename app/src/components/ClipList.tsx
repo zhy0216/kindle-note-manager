@@ -42,14 +42,14 @@ class _ClipList extends React.Component<Props> {
 
   }
 
-  renderHelp() {
-    return <div></div>
+  renderImage() {
+    return (<div className="non-clip-imge" />)
   }
 
   render () {
     const {clips} = this.props;
 
-    if (clips.length === 0) return this.renderHelp();
+    if (clips.length === 0) return this.renderImage();
 
     return (
       <div
