@@ -1,10 +1,11 @@
 import { ThunkAction, ThunkDispatch } from 'redux-thunk'
-import { AnyAction } from 'redux';
+import { AnyAction, Dispatch } from 'redux';
 
 import { Clip } from '../types/clip';
 import {parse} from './parse';
 
 export const ADD_CLIP = 'ADD_CLIP';
+export const SELECT_TITLE = 'SELECT_TITLE';
 
 
 export interface AddClipAction {
@@ -19,3 +20,5 @@ export const parseFile = (filePath: string): ThunkAction<Promise<void>, {}, {}, 
     dispatch({type: 'ADD_CLIP', clips});
 
   };
+
+export const selectTitle = (title: string) => ({type: SELECT_TITLE, title});

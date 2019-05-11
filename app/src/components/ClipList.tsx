@@ -81,7 +81,9 @@ const style = {
 
 
 export const ClipList = Radium.default(connect(({clip}: RootState) => {
-  const clips = clip.selectedTitle? clip.clipsByTitle[clip.selectedTitle]:
+  const clips = clip.selectedTitles.length > 0? clip.selectedTitles
+      .map(title =>  clip.clipsByTitle[title])
+      .reduce((acc, arr) => acc.concat(arr)):
     bookColletionToClips(clip.clipsByTitle).sort((c1, c2) => c1.time - c2.time);
 
 

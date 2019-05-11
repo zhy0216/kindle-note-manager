@@ -1,13 +1,13 @@
 import { Action, Reducer } from 'redux';
 
-import { ADD_CLIP } from '../actions/clipActions';
+import { ADD_CLIP, SELECT_TITLE } from '../actions/clipActions';
 import {BookCollection, Clip, bookColletionToClips, clipsToBookCollections} from "../types/clip";
 
 
 export interface ClipState {
   // readonly clips: Clip[];
   readonly clipsByTitle: BookCollection,
-  readonly selectedTitle?: string,
+  readonly selectedTitles: string[],
 }
 
 const defaultState: ClipState = {
@@ -15,7 +15,7 @@ const defaultState: ClipState = {
   clipsByTitle: {
 
   },
-  selectedTitle: undefined
+  selectedTitles: []
 };
 
 export const clipReducer: Reducer<ClipState> = (
@@ -32,10 +32,19 @@ export const clipReducer: Reducer<ClipState> = (
     const r = clipsToBookCollections(newClips.sort((c1, c2) => c1.time - c2.time));
 
     return {
+      ...state,
       clipsByTitle: {
         ...r
       }
     };
+  case SELECT_TITLE:
+    const selectTitleAction = (action as any);
+
+    return {
+      ...state,
+      selectedTitles: Array.from(new Set([...state.selectedTitles, selectTitleAction.title]))
+    };
+
   default:
     return state;
   }

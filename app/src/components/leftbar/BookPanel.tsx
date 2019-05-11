@@ -18,6 +18,8 @@ import { RootState } from '../../reducers';
 import { AnyAction, Dispatch } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
 import {BookCollection, Clip} from '../../types/clip';
+import {selectTitle} from '../../actions/clipActions';
+import {number} from "prop-types";
 
 
 class _BookPanel extends React.Component<IPanelProps & {dispatch: ThunkDispatch<{}, {}, AnyAction>} & {clipsByTitle: BookCollection}, {}> {
@@ -40,7 +42,7 @@ class _BookPanel extends React.Component<IPanelProps & {dispatch: ThunkDispatch<
     )
   }
 
-  renderBook(book: {title: string, count: number}) {
+  renderBook(book: {title: string, count: number}, index: number) {
     const {dispatch} = this.props;
     const skeletonClass = false? Classes.SKELETON: ""
 
@@ -50,8 +52,10 @@ class _BookPanel extends React.Component<IPanelProps & {dispatch: ThunkDispatch<
         // key={providerFolder.id}
         className={"no-border"}
         style={style.card}
+        key={index}
         onClick={() => {
-          console.log("click")
+          console.log("click me")
+          dispatch(selectTitle(book.title))
         }}
       >
         <div style={{display: "flex", alignItems: "center"}}>
@@ -65,7 +69,7 @@ class _BookPanel extends React.Component<IPanelProps & {dispatch: ThunkDispatch<
   renderBookList(bookCollection: BookCollection) {
     return (
       <div style={{height: "500px"}}>
-        {Object.keys(bookCollection).sort().map(title => this.renderBook({title, count: bookCollection[title].length }))}
+        {Object.keys(bookCollection).sort().map((title, i) => this.renderBook({title, count: bookCollection[title].length }, i))}
       </div>
     )
   }
