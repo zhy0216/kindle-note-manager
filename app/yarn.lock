@@ -2773,6 +2773,11 @@ electron-chromedriver@~1.8.0:
     electron-download "^4.1.0"
     extract-zip "^1.6.5"
 
+electron-create-menu@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/electron-create-menu/-/electron-create-menu-2.0.0.tgz#f30748812fab2c89108008ab9c6b5d8f806ffc2b"
+  integrity sha512-2He0L4Beh1avj7nsnnpUC/nFWSH3zduNH+Yn1KqMIiyoSJy/OSN1sZUytAmVOrjf5I8ssvOiq5Qlr6Gj6NyWHg==
+
 electron-devtools-installer@^2.2.4:
   version "2.2.4"
   resolved "https://registry.yarnpkg.com/electron-devtools-installer/-/electron-devtools-installer-2.2.4.tgz#261a50337e37121d338b966f07922eb4939a8763"

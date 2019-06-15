@@ -1,6 +1,6 @@
 {
   "name": "kindle-clip",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "",
   "main": "./dist/main.js",
   "scripts": {
@@ -125,6 +125,7 @@
   },
   "dependencies": {
     "@blueprintjs/core": "^3.15.1",
+    "electron-create-menu": "^2.0.0",
     "moment": "^2.24.0",
     "radium": "^0.25.1",
     "react": "^16.2.0",

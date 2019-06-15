@@ -1,71 +1,72 @@
-$icon-font-path: "~@blueprintjs/core/resources/icons";
+$icon-font-path: '~@blueprintjs/core/resources/icons';
 @import '~@blueprintjs/core/lib/css/blueprint.css';
 
-html, body{
-  margin: 0;
-  height: 100%;
+html,
+body {
+    margin: 0;
+    height: 100%;
+}
+
+body {
+    -webkit-app-region: drag;
 }
 
 #root {
     //display: flex;
-  height: 100%;
-  overflow: hidden;
+    height: 100%;
+    overflow: hidden;
 }
 
 .no-border {
-  box-shadow: none;
-  -webkit-box-shadow: none;
-  border: none;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    border: none;
 }
 
 .bp3-button {
-  outline: none;
-  outline-offset: 0;
+    outline: none;
+    outline-offset: 0;
 }
 
 .clip {
-  position: relative;
-  .divide-line {
-    position: absolute;
-    width: 3px;
-    height: 3px;
-    background: #106ba3;
-    left: -13px;
-    top: 18px;
-  }
+    position: relative;
+    .divide-line {
+        position: absolute;
+        width: 3px;
+        height: 3px;
+        background: #106ba3;
+        left: -13px;
+        top: 18px;
+    }
 }
 
 .no-select {
-  user-select: none;
+    user-select: none;
 }
 
 #setting-list-container {
-  justify-content: flex-end;
-  display: flex;
-  padding-right: 10px;
+    justify-content: flex-end;
+    display: flex;
+    padding-right: 10px;
+    -webkit-app-region: drag;
 }
 
-.book-selected{
-  color: #106ba3;
+.book-selected {
+    color: #106ba3;
 }
 
 .non-clip-image {
-  background-image: url(../static/book.jpg);
-  background-size: cover;
-  height: 100%;
-  background-repeat: unset;
-}
-
-#left-bar{
-  .bp3-panel-stack-header{
-    display: none;
-  }
-  .bp3-panel-stack{
+    background-image: url(../static/book.jpg);
+    background-size: cover;
     height: 100%;
-  }
+    background-repeat: unset;
 }
 
-
-
-
-
+#left-bar {
+    .bp3-panel-stack-header {
+        display: none;
+    }
+    .bp3-panel-stack {
+        height: 100%;
+    }
+}

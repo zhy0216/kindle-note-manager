@@ -1,6 +1,7 @@
 import { app, BrowserWindow } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
+const Menu = require('electron-create-menu');
 
 let win: BrowserWindow | null;
 
@@ -16,52 +17,53 @@ const installExtensions = async () => {
 
 const createWindow = async () => {
   if (process.env.NODE_ENV !== 'production') {
-    await installExtensions();
-  }
+      await installExtensions();
+    }
 
   win = new BrowserWindow({
-    width: 800,
-    height: 600,
-    webPreferences: {
-      nativeWindowOpen: true
-    },
-    icon: path.join(__dirname, 'icon.icns')
-  });
+      width: 800,
+      height: 600,
+      titleBarStyle: 'hidden',
+      webPreferences: {
+          nativeWindowOpen: true
+        },
+      icon: path.join(__dirname, 'icon.icns')
+    });
   if (process.env.NODE_ENV !== 'production') {
-    win.loadURL(`http://localhost:2003`);
-  } else {
-    win.loadURL(
+      win.loadURL(`http://localhost:2003`);
+    } else {
+      win.loadURL(
             url.format({
               pathname: path.join(__dirname, 'index.html'),
               protocol: 'file:',
               slashes: true
             })
         );
-  }
+    }
 
   if (process.env.NODE_ENV !== 'production') {
         // Open DevTools
-    win.webContents.openDevTools();
-  }
+      win.webContents.openDevTools();
+    }
 
   win.on('closed', () => {
-    win = null;
-  });
-
+      win = null;
+    });
 };
 
 app.on('ready', () => {
   createWindow();
+  Menu();
 });
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
-    app.quit();
-  }
+      app.quit();
+    }
 });
 
 app.on('activate', () => {
   if (win === null) {
-    createWindow();
-  }
+      createWindow();
+    }
 });
